@@ -1,0 +1,9 @@
+---
+- name: create db server template
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: create template 
+      command: gcloud compute instance-templates create {{ name }} --boot-disk-auto-delete --boot-disk-size=10GB --image=project-db-snap --tags=http-server 

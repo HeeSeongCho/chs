@@ -1,0 +1,4 @@
+name: test-web-instance
+tname: test-web-template
+image: project-web-snap2
+tags: http-server
