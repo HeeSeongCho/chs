@@ -1,2 +1,0 @@
-- name: make template 
-  command: gcloud compute instance-templates create {{ tname }} --boot-disk-auto-delete --boot-disk-size=10GB --image={{ image }} --tags={{ tags }}

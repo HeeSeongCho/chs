@@ -1,9 +1,0 @@
----
-- name: create web db server 
-  hosts: localhost
-  gather_facts: no
-  vars_files:
-    - var.yml
-  tasks:
-    - name: create
-      include_tasks: playbook2.yml

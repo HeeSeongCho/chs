@@ -1,5 +1,0 @@
-tname: test-template-db
-name: test-instance-db
-exip: 104.198.255.162
-tags: http-server
-image: project-db-snap
