@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: cccr-nodeport
+spec:
+  type: NodePort
+  ports:
+  - port: 80  #서비스 접근 포트
+    targetPort: 8080 #파드 접근 포트
+    nodePort: 31111  #노드 접근 포트
+  selector:
+    app: cccr
