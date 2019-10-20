@@ -1,0 +1,7 @@
+---
+- name: create mysql 
+  hosts: localhost
+  gather_facts: no
+  become: true
+  tasks:
+    - import_tasks: mysql-lb.yml
