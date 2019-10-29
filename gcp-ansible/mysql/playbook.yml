@@ -4,4 +4,5 @@
   gather_facts: no
   become: true
   tasks:
-    - import_tasks: mysql-lb.yml
+    - import_tasks: websv-playbook.yml
+    - import_tasks: dbsv-playbook.yml

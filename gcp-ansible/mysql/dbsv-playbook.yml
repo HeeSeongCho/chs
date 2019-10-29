@@ -8,14 +8,11 @@
     - name: create TCP firewall rules
       command: gcloud compute firewall-rules create default-allow-3306 --allow tcp:3306 --target-tags={{ db_tag }}
 
-    - name: create tcp health check
-      command: gcloud compute health-checks create http {{ db_hc }} --project=project-manageiq --port=3306 --request-path=/ --proxy-header=NONE --check-interval=10 --timeout=5 --unhealthy-threshold=3 --healthy-threshold=2 
-
     - name: create db server template
       command: gcloud compute instance-templates create {{ db_template }} --boot-disk-size=10GB --image={{ db_image }} --tags={{ db_tag }} --scopes=default
 
     - name: create db server managed instance group to us-central1
-      command: gcloud compute instance-groups managed create {{ db_region1 }}-dbig --size=1 --template={{ db_template }} --base-instance-name={{ db_region1 }}-db --initial-delay=60 --health-check={{ db_hc }} --region={{ db_region1 }}
+      command: gcloud compute instance-groups managed create {{ db_region1 }}-dbig --size=1 --template={{ db_template }} --base-instance-name={{ db_region1 }}-db --initial-delay=60 --region={{ db_region1 }}
 
     - name: managed instance group set autoscaling
       command: gcloud compute instance-groups managed set-autoscaling {{ db_region1 }}-dbig --min-num-replicas=1 --max-num-replicas=5 --cool-down-period=60 --target-cpu-utilization=0.65 --region={{ db_region1 }}
