@@ -1,6 +1,6 @@
 ---
 - name: configuration web server
-  hosts: localhost
+  hosts: all
   gather_facts: no
   vars:
     web_tag: http-server
