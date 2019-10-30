@@ -2,8 +2,13 @@
 - name: configuration web server
   hosts: localhost
   gather_facts: no
-  vars_files:
-    - vars.yml
+  vars:
+    web_tag: http-server
+    web_image: project-web-snap2
+    web_hc: http-healthcheck
+    web_region1: us-central1
+    web_region2: asia-northeast1
+    web_template: web-tmp 
   become: true
   tasks:
     - name: create HTTP firewall rules
