@@ -1,8 +1,11 @@
  ---
  - name: configuration DB server
    hosts: localhost
-   vars_files:
-     - vars.yml
+   vars:
+    db_template: db-tmp
+    db_tag: mysql
+    db_image: project-db-snap
+    db_region1: us-central1
    gather_facts: no
    tasks:
      - name: create db server template
