@@ -1,0 +1,10 @@
+web_tag: http-server
+web_image: project-web-snap2
+web_hc: http-healthcheck
+web_region1: us-central1
+web_region2: asia-northeast1
+web_template: web-tmp
+db_tag: mysql
+db_template: db-tmp
+db_image: project-db-snap
+db_region1: us-central1
