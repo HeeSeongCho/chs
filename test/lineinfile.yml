@@ -4,7 +4,7 @@
   vars:
     hostip: 192.168.100.12
   become: true
-  become_user: user
+  become_user: heesung6809
   become_method: sudo
   gather_facts: no
   tasks:
