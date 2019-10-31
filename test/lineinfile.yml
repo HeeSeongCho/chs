@@ -11,6 +11,6 @@
     - name: replace host ip
       lineinfile:
         path: /var/www/html/wordpress/wp-config.php
-        regexp: 'db_host'
+        regexp: '104.198.255.162'
         line: '{{ hostip }}'
   
