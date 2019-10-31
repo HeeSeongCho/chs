@@ -8,9 +8,9 @@
   become_method: sudo
   gather_facts: no
   tasks:
-    - name: line in file
+    - name: replace host ip
       lineinfile:
-        path: /home/user/ansible/chs/test/text.txt
-        regexp: '^hostip:'
-        line: 'hostip: {{ hostip }}'
+        path: /var/www/html/wordpress/wp-config.php
+        regexp: 'db_host'
+        line: '{{ hostip }}'
   
