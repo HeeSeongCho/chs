@@ -1,0 +1,16 @@
+---
+- name: test
+  hosts: localhost
+  vars:
+    hostip: 192.168.100.12
+  become: true
+  become_user: user
+  become_method: sudo
+  gather_facts: no
+  tasks:
+    - name: line in file
+      lineinfile:
+        path: /home/user/ansible/chs/test/text.txt
+        regexp: '^hostip:'
+        line: 'hostip: {{ hostip }}'
+  
