@@ -1,0 +1,28 @@
+---
+- name: configuration web server
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: create HTTP firewall rules
+      command: gcloud compute firewall-rules create default-allow-http --allow tcp:80 --target-tags={{ web_tag }}
+      ignore_error: true
+
+    - name: create web server template
+      command: gcloud compute instance-templates create web-tmp --boot-disk-size=10GB --image={{ web_image }} --tags={{ web_tag }} --scopes=default 
+
+    - name: create health check
+      command: gcloud compute health-checks create tcp {{ web_hc }} --project=project-manageiq --port=80 --proxy-header=NONE --check-interval=10 --timeout=5 --unhealthy-threshold=3 --healthy-threshold=2 
+
+    - name: create web server managed instance group to us-central1
+      command: gcloud compute instance-groups managed create {{ web_region1 }}-wig --size=1 --template={{ web_template }} --base-instance-name={{ web_region1 }}-web --initial-delay=60 --health-check={{ web_hc }} --region={{ web_region1 }}
+
+    - name: managed instance group set autoscaling
+      command: gcloud compute instance-groups managed set-autoscaling {{ web_region1 }}-wig --min-num-replicas=1 --max-num-replicas=5 --target-load-balancing-utilization=0.8 --region={{ web_region1 }}
+
+    - name: create web server managed instance group to asia-northwest1
+      command: gcloud compute instance-groups managed create {{ web_region2 }}-wig --size=1 --template={{ web_template }} --base-instance-name={{ web_region2 }}-web --initial-delay=60 --health-check={{ web_hc }} --region={{ web_region2 }}
+
+    - name: managed instance group set autoscaling
+      command: gcloud compute instance-groups managed set-autoscaling {{ web_region2 }}-wig --min-num-replicas=1 --max-num-replicas=5 --target-load-balancing-utilization=0.8 --region={{ web_region2 }}
