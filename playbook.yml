@@ -7,5 +7,5 @@
     - vars.yml
   tasks:
     - name: configuration web
-      import_tasks: web-playbook.yml
+      import_tasks: iq-web-playbook.yml
 
