@@ -1,41 +1,49 @@
-- name: create web server template
-  command: gcloud compute instance-templates create web-tmp --boot-disk-size=10GB --image={{ web_image }} --tags={{ web_tag }} --scopes=default 
+---
+- name: configuration web db servers
+  hosts: localhost
+  gather_facts: no
+  become: true
+  vars_files:
+    - vars.yml
+  tasks:  
+    - name: create web server template
+      command: gcloud compute instance-templates create web-tmp --boot-disk-size=10GB --image={{ web_image }} --tags={{ web_tag }} --scopes=default 
 
-- name: create health check
-  command: gcloud compute health-checks create tcp {{ web_hc }} --project=project-manageiq --port=80 --proxy-header=NONE --check-interval=10 --timeout=5 --unhealthy-threshold=3 --healthy-threshold=2 --port-name=http
+    - name: create health check
+      command: gcloud compute health-checks create tcp {{ web_hc }} --project=project-manageiq --port=80 --proxy-header=NONE --check-interval=10 --timeout=5 --unhealthy-threshold=3 --healthy-threshold=2 --port-name=http
 
-- name: create web server managed instance group to us-central1
-  command: gcloud compute instance-groups managed create {{ web_region1 }}-wig --size=1 --template={{ web_template }} --base-instance-name={{ web_region1 }}-web --initial-delay=60 --health-check={{ web_hc }} --region={{ web_region1 }}
+    - name: create web server managed instance group to us-central1
+     command: gcloud compute instance-groups managed create {{ web_region1 }}-wig --size=1 --template={{ web_template }} --base-instance-name={{ web_region1 }}-web --initial-delay=60 --health-check={{ web_hc }} --region={{ web_region1 }}
 
-- name: managed instance group1 set autoscaling
-  command: gcloud compute instance-groups managed set-autoscaling {{ web_region1 }}-wig --min-num-replicas=1 --max-num-replicas=5 --target-load-balancing-utilization=0.8 --region={{ web_region1 }}
+    - name: managed instance group1 set autoscaling
+      command: gcloud compute instance-groups managed set-autoscaling {{ web_region1 }}-wig --min-num-replicas=1 --max-num-replicas=5 --target-load-balancing-utilization=0.8 --region={{ web_region1 }}
 
-- name: set named ports to instance group1
-  command: gcloud compute instance-groups managed set-named-ports {{ web_region1 }}-wig --region={{ web_region1 }} --named-ports=http:80
+    - name: set named ports to instance group1
+      command: gcloud compute instance-groups managed set-named-ports {{ web_region1 }}-wig --region={{ web_region1 }} --named-ports=http:80
 
-- name: create web server managed instance group to asia-northwest1
-  command: gcloud compute instance-groups managed create {{ web_region2 }}-wig --size=1 --template={{ web_template }} --base-instance-name={{ web_region2 }}-web --initial-delay=60 --health-check={{ web_hc }} --region={{ web_region2 }}
+    - name: create web server managed instance group to asia-northwest1
+      command: gcloud compute instance-groups managed create {{ web_region2 }}-wig --size=1 --template={{ web_template }} --base-instance-name={{ web_region2 }}-web --initial-delay=60 --health-check={{ web_hc }} --region={{ web_region2 }}
 
-- name: managed instance group set autoscaling
-  command: gcloud compute instance-groups managed set-autoscaling {{ web_region2 }}-wig --min-num-replicas=1 --max-num-replicas=5 --target-load-balancing-utilization=0.8 --region={{ web_region2 }}
+    - name: managed instance group set autoscaling
+     command: gcloud compute instance-groups managed set-autoscaling {{ web_region2 }}-wig --min-num-replicas=1 --max-num-replicas=5 --target-load-balancing-utilization=0.8 --region={{ web_region2 }}
 
-- name: set named ports to instance group2
-  command: gcloud compute instance-groups managed set-named-ports {{ web_region2 }}-wig --region={{ web_region2 }} --named-ports=http:80
+    - name: set named ports to instance group2
+     command: gcloud compute instance-groups managed set-named-ports {{ web_region2 }}-wig --region={{ web_region2 }} --named-ports=http:80
 
-- name: create backend service
-  command:  gcloud compute backend-services create {{ backend_service }} --global --health-checks={{ web_hc }} --protocol=HTTP --port-name=http --connection-draining-timeout=60
+    - name: create backend service
+     command:  gcloud compute backend-services create {{ backend_service }} --global --health-checks={{ web_hc }} --protocol=HTTP --port-name=http --connection-draining-timeout=60
 
-- name: add instance group1 to backend service
-  command: gcloud compute backend-services add-backend {{ backend_service }} --instance-group={{ web_region1 }}-wig --instance-group-region={{ web_region1 }} --balancing-mode=rate --max-rate-per-instance=100 --capacity-scaler=0.8 --global
+    - name: add instance group1 to backend service
+     command: gcloud compute backend-services add-backend {{ backend_service }} --instance-group={{ web_region1 }}-wig --instance-group-region={{ web_region1 }} --balancing-mode=rate --max-rate-per-instance=100 --capacity-scaler=0.8 --global
 
-- name: add instance group2 to backend service
-  command: gcloud compute backend-services add-backend {{ backend_service }} --instance-group={{ web_region2 }}-wig --instance-group-region={{ web_region2 }} --balancing-mode=rate --max-rate-per-instance=100 --capacity-scaler=0.8 --global
+    - name: add instance group2 to backend service
+      command: gcloud compute backend-services add-backend {{ backend_service }} --instance-group={{ web_region2 }}-wig --instance-group-region={{ web_region2 }} --balancing-mode=rate --max-rate-per-instance=100 --capacity-scaler=0.8 --global
 
-- name: create url map 
-  command: gcloud compute url-maps create {{ http_lb }} --default-service {{ backend_service }}
+    - name: create url map 
+     command: gcloud compute url-maps create {{ http_lb }} --default-service {{ backend_service }}
 
-- name: create target http proxy
-  command: gcloud compute target-http-proxies create {{ http_proxy }} --url-map {{ http_lb }}
+    - name: create target http proxy
+     command: gcloud compute target-http-proxies create {{ http_proxy }} --url-map {{ http_lb }}
 
-- name: create frontend 
-  command: gcloud compute forwarding-rules create {{ http_frontend }} --global --ports=80 --target-http-proxy {{ http_proxy }}
+    - name: create frontend 
+      command: gcloud compute forwarding-rules create {{ http_frontend }} --global --ports=80 --target-http-proxy {{ http_proxy }}
