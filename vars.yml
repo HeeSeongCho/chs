@@ -4,7 +4,7 @@ db_template: db-tmp
 db_image: project-db-snap
 db_region1: us-central1
 web_tag: http-server
-web_image: project-web-snap2
+web_image: project-web-wordpress
 web_hc: http-health-check
 web_template: web-tmp
 web_region1: us-central1
