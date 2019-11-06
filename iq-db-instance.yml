@@ -11,6 +11,9 @@
     db_name: db-server
     db_address: 104.198.255.162
   tasks:
+    - name: create firewall rule
+      command: gcloud compute firewall-rules create default-allow-3306 --allow tcp:3306 --target-tags={{ db_tag }}
+  
     - name: create instance template
       command: gcloud compute instance-templates create {{ db_template }} --tags={{ db_tag }} --image={{ db_image }} --scopes=default --region={{ db_region1 }}
       
