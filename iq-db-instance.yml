@@ -12,7 +12,7 @@
     db_address: 104.198.255.162
   tasks:
     - name: create instance template
-      command: gcloud compute instance-templates create {{ db_template }} --tags=mysql --image={{ db_image }} --scopes=default
+      command: gcloud compute instance-templates create {{ db_template }} --tags={{ db_tag }} --image={{ db_image }} --scopes=default
       
     - name: create instnace VM
-      command: gcloud compute instances create {{ db_name }} --source-instance-template={{ db_template }} --tags=mysql --scope=default --address={{ db_address }}
+      command: gcloud compute instances create {{ db_name }} --source-instance-template={{ db_template }} --tags={{ db_tag }} --scope=default --address={{ db_address }}
