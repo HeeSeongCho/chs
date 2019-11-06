@@ -1,9 +1,7 @@
 ---
 - name: configuration web db servers
-  hosts: localhost
+  hosts: all
   gather_facts: no
-  become: true
-  become_method: sudo  
   vars:
     web_tag: http-server
     web_image: project-web-wordpress
