@@ -1,0 +1,18 @@
+---
+- name: create wordpress instance
+  hosts: localhost
+  become: true
+  become_method: sudo
+  tasks:
+    - name: create ec2 instance
+      ec2 instance:
+        name: "public-compute-instance"
+        key_name: aws-heeseong
+        vpc_subnet_id: subnet-b3b09cff
+        instance_type: t2.micro
+        security_group: sg-0f263c1cfc28fd94c
+        network:
+          assign_public_ip:
+        image_id: ami-00ac20109b085fecc
+        tags:
+          Environment: test
