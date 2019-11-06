@@ -1,6 +1,7 @@
 ---
 - name: create wordpress instance
   hosts: localhost
+  gather_facts: no
   become: true
   become_method: sudo
   tasks:
