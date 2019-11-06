@@ -5,15 +5,14 @@
   become: true
   become_method: sudo
   tasks:
-    - name: create ec2 instance
-      ec2 instance:
-        name: "create wordpress instance"
-        key_name: aws-heeseong
-        vpc_subnet_id: subnet-b3b09cff
+    - name: create ec2
+      ec2:
+        aws_access_key: AKIAJRID4RL5K35PZZNQ
+        aws_secret_key: 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
+        key_name: aws-heeseong2
         instance_type: t2.micro
-        security_group: sg-0f263c1cfc28fd94c
-        network:
-          assign_public_ip:
-        image_id: ami-00ac20109b085fecc
-        tags:
-          Environment: test
+        image: ami-00ac20109b085fecc
+        group: default
+        vpc_subnet_id: subnet-04dd31c4eb7731557
+        assign_public_ip: yes
+        region: us-east-1
