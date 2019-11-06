@@ -3,8 +3,18 @@
   hosts: localhost
   gather_facts: no
   become: true
-  vars_files:
-    - vars.yml
+  become_method: sudo  
+  vars:
+    web_tag: http-server
+    web_image: project-web-wordpress
+    web_hc: http-health-check
+    web_template: web-tmp
+    web_region1: us-central1
+    web_region2: asia-northeast1
+    backend_service: http-backend-svc
+    http_lb: http-lb
+    http_proxy: http-proxy
+    http_frontend: http-frontend  
   tasks:  
     - name: create web server template
       command: gcloud compute instance-templates create web-tmp --boot-disk-size=10GB --image={{ web_image }} --tags={{ web_tag }} --scopes=default 
