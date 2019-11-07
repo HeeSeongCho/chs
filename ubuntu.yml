@@ -1,0 +1,13 @@
+---
+- name: install ansible
+  hosts: localhost
+  connection: local
+  become: true
+  become_method: sudo
+  tasks:
+    - name: install
+      command: apt update
+    
+    - command: apt install software-properties-common
+    - command: apt-add-repository --yes --update ppa:ansible/ansible
+    - command: apt install ansible
