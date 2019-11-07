@@ -1,7 +1,7 @@
 ---
 - name: install gcloud cli command
   hosts: localhost
-  gather_facts: no
+  connection: local
   become: true
   become_method: sudo
   tasks:        
