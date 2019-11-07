@@ -8,14 +8,12 @@
     - name: install gcloud SDK
       get_url:
         url: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-245.0.0-linux-x86_64.tar.gz?hl=ko
-        dest: ~/
+        dest: /home
         
     - name: tar
       unarchive:
         src: google-cloud-sdk-245.0.0-linux-x86_64.tar.gz
-        dest: ~/
+        dest: /home
         
     - name: execute script
-      shell: gcloud init
-      args:
-        executable: ~/google-cloud-sdk/bin
+      command: gcloud init
