@@ -1,0 +1,26 @@
+---
+- name: install gcloud cli command
+  hosts: localhost
+  gather_facts: no
+  become: true
+  become_method: sudo
+  tasks:
+    - name: install wget package
+      yum:
+        name: wget
+        state: latest
+        
+    - name: install gcloud SDK
+      get_url:
+        url: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-245.0.0-linux-x86_64.tar.gz?hl=ko
+        dest: ~/
+        
+    - name: tar
+      unarchive:
+        src: google-cloud-sdk-245.0.0-linux-x86_64.tar.gz
+        dest: ~/
+        
+    - name: execute script
+      shell: gcloud init
+      args:
+        executable: ~/google-cloud-sdk/bin
