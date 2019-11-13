@@ -1,6 +1,6 @@
 ---
 - name: configuration web db servers
-  hosts: all
+  hosts: localhost
   gather_facts: no
   vars:
     web_tag: http-server
