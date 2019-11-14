@@ -1,0 +1,18 @@
+---
+- name: provisioning aws EC2 instance
+  hosts: localhost
+  connection: local
+  vars:
+    
+  tasks:
+    - name: create EC2 instance
+      ec2:
+        instance_type:        #사용할 머신 타입
+        key_name:           #pem 파일명
+        image:              #사용할 이미지
+        region:         
+        group: default      #보안그룹
+        count: 1            #생성할 인스턴스 개수
+        vpc_subnet_id:        #사용할 서브넷
+        assign_public_ip:       #외부 ip
+        
