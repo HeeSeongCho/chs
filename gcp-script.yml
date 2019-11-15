@@ -1,6 +1,6 @@
 ---
 - name: execute shell script
-  hosts: localhost
+  hosts: 34.97.255.171
   gather_facts: no
   tasks:
     - name: execute
