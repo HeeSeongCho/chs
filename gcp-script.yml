@@ -2,8 +2,6 @@
 - name: execute shell script
   hosts: localhost
   gather_facts: no
-  vars:
-    script: execute_playbook.sh
   tasks:
     - name: execute
-      command: sh ~/{{ script }}
+      command: sh ~/execute_playbook.sh
