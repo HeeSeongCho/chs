@@ -1,6 +1,7 @@
 ---
 - name: execute shell script
-  hosts: localhost
+  hosts: all
+  connect: local
   gather_facts: no
   tasks:
     - name: execute
