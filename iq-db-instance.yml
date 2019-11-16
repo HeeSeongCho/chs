@@ -1,7 +1,6 @@
 ---
 - name: configuration db VM instance
   hosts: localhost
-  become: true
   gather_facts: no
   vars:
     db_tag: mysql
