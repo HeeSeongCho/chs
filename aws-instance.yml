@@ -7,8 +7,8 @@
   tasks:
     - name: create ec2
       ec2:
-        aws_access_key: AKIAJRID4RL5K35PZZNQ
-        aws_secret_key: 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
+        aws_access_key: 
+        aws_secret_key: 
         key_name: aws-heeseong2
         instance_type: t2.micro
         image: ami-00ac20109b085fecc
