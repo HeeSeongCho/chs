@@ -3,12 +3,17 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  become: true
-  become_method: sudo
   tasks:
     - name: create ec2
       ec2:
         aws_access_key:
         aws_secret_key:
+        key_name:  #인스턴스에 사용할 키페어 이름
         region:
-        
+        image:
+        instance_type:
+        group:
+        vpc_subnet_id:
+        assign_public_ip: yes
+        count: 1
+        wait: true
