@@ -1,18 +1,14 @@
 ---
 - name: create wordpress instance
   hosts: localhost
+  connection: local
   gather_facts: no
   become: true
   become_method: sudo
   tasks:
     - name: create ec2
       ec2:
-        aws_access_key: 
-        aws_secret_key: 
-        key_name: aws-heeseong2
-        instance_type: t2.micro
-        image: ami-00ac20109b085fecc
-        group: default
-        vpc_subnet_id: subnet-04dd31c4eb7731557
-        assign_public_ip: yes
-        region: us-east-1
+        aws_access_key:
+        aws_secret_key:
+        region:
+        
