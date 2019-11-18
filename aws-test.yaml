@@ -7,10 +7,10 @@
       ec2:
         key_name: aws-heeseong #인스턴스에 사용할 키페어 이름
         region: ap-northeast-2
-        image: ami-0423d7f65139da623
+        image: ami-0423d7f65139da623    #AMI ID
         instance_type: t2.micro
-        group: launch-wizard-2   #보안그룹
-        vpc_subnet_id: subnet-b3b09cff
-        assign_public_ip: yes
+        group: launch-wizard-2   #보안그룹이름
+        vpc_subnet_id: subnet-b3b09cff  #서브넷 id
+        assign_public_ip: yes 
         count: 1
         wait: true
