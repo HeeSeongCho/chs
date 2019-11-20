@@ -39,7 +39,7 @@
         unhealthy_threshold: 5
         project: "{{ project_id }}"
         auth_kind: serviceaccount
-        service_account_file: "{{ service_account_email }}"
+        service_account_file: "{{ credentials_file }}"
         state: present
 ##
         
