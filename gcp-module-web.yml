@@ -29,15 +29,21 @@
         service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
         tags: "{{ web_tag }}"
         
-    - local_action:
-        module: gce_lb
-        name: testlb    #로드밸런서 이름
-        region: us-central1   #로드밸런서가 위치할 리전
-        httphealthcheck_name: "{{ web_hc }}"    #health check의 이름
-        httphealthcheck_port: 80
-        httphealthcheck_interval: 10
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
-        project_id: "project-manageiq"
+    - name: create a health check
+      gcp_compute_health_check:
+        name: test-healthcheck
+        type: TCP
+        tcp_health_check:
+          port_name: http
+          request: ping
+          response: pong
+        healthy_threshold: 10
+        timeout_sec: 2
+        unhealthy_threshold: 5
+        project: project-manageiq
+        auth_kind: serviceaccount
+        service_account_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
+        state: present
         
     - name: Create MIG to us-central1
       gce_mig:
@@ -95,13 +101,21 @@
         backend_service_name: "{{ backend_service }}"
         backends:
         - instance_group: "{{ web_region1 }}-wig"
-          max_utilization: 0.8
-          max_rate: 10
         - instance_group: "{{ web_region2 }}-wig"
-          max_utilization: 0.8
-          max_rate: 4
         healthchecks:
         - "{{ web_hc }}"
         port_name: http
+        protocol: HTTP
         state: present
         timeout: 60
+    
+    - name: Create Minimal Url_Map
+      gcp_url_map:
+        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        credentials_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
+        project_id: "project-manageiq"
+        url_map_name: "testingurlmap"
+        default_service: http-backend-svc	
+        state: present
+        
+        
