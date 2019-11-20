@@ -37,6 +37,7 @@
         http_health_check:
           port_name: http
         healthy_threshold: 2
+        check_interval_sec: 10
         timeout_sec: 5
         unhealthy_threshold: 3
         project: "{{ project_id }}"
