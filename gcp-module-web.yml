@@ -62,7 +62,7 @@
           policy:
             min_instances: 1
             max_instances: 5
-            cool_down_period: 45
+            cool_down_period: 60
             load_balancing_utilization:
               target: 0.8
 
@@ -86,7 +86,7 @@
           policy:
             min_instances: 1
             max_instances: 5
-            cool_down_period: 45
+            cool_down_period: 60
             load_balancing_utilization:
               target: 0.8
 
@@ -98,7 +98,11 @@
         backend_service_name: "{{ backend_service }}"
         backends:
         - instance_group: "{{ web_region1 }}-wig"
+          max_utilization: 0.8
+          max_rate: 10
         - instance_group: "{{ web_region2 }}-wig"
+          max_utilization: 0.8
+          max_rate: 10
         healthchecks:
         - "{{ web_hc }}"
         port_name: http
