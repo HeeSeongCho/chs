@@ -1,0 +1,37 @@
+---
+- name: configuration db VM instance
+  hosts: localhost
+  gather_facts: no
+  vars:
+    service_account_email: joy-900@project-manageiq.iam.gserviceaccount.com   #환경에 맞게 변경
+    credentials_file: /home/heesung6809/project-manageiq-ee12388141f5.json    #환경에 맞게 변경
+    project_id: project-manageiq    #환경에 맞게 변경    
+    db_tag: mysql
+    db_template: db-tmp
+    db_image: project-db-snap
+    db_region1: us-central1
+    db_name: db-server
+    db_address: 104.198.255.162   #환경에 맞게 외부 ip 등록
+  tasks:
+    - name: create instance template
+      gce_instance_template:
+        name: "{{ db_template }}"
+        size: n1-standard-1
+        image: "{{ db_image }}"
+        state: present
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+        tags: "{{ db_tag }}"
+        
+    - name: create instance
+      gce:
+        instance_names: "{{ db_name }}"
+        zone: "{{ db_region1 }}-a"
+        machine_type: n1-standard-1
+        image: "{{ db_image }}"
+        state: present
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+        external_ip: "{{ db_address }}"
