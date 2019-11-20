@@ -16,7 +16,7 @@
   tasks:  
     - name: create instance template
       gce_instance_template:
-        name: "{{ web_tmp }}"
+        name: "{{ web_template }}"
         size: n1-standard-1
         image: "{{ web_image }}"
         state: present
@@ -35,4 +35,26 @@
         service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
         project_id: "project-manageiq"
         
-    
+    - name: Create MIG
+      gce_mig:
+        project_id: "project-manageiq"
+        credentials_file: "/home/$USER/project-manageiq-ee12388141f5.json"
+        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        name: "{{ web_region1 }}-wig"
+        zone: "{{ web_region1 }}-a"
+        state: present
+        size: 1
+        template: "{{ web_template }}"
+        named_ports:
+        - name: http
+          port: 80
+        recreate_instances: yes
+        autoscaling:
+          enabled: yes
+          name: "{{ web_region1 }}-wig"
+          policy:
+            min_instances: 1
+            max_instances: 5
+            cool_down_period: 45
+            load_balancing_utilization:
+              target: 0.8
