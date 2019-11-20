@@ -25,3 +25,14 @@
         service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
         tags: {{ web_tag }}
         
+    - local_action:
+        module: gce_lb
+        name: testlb    #로드밸런서 이름
+        region: us-central1   #로드밸런서가 위치할 리전
+        httphealthcheck_name: "{{ web_hc }}"    #health check의 이름
+        httphealthcheck_port: 80
+        httphealthcheck_interval: 10
+        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        project_id: "project-manageiq"
+        
+    
