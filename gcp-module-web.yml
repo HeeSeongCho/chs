@@ -32,10 +32,11 @@
     - name: create a HTTP health check
       gcp_compute_http_health_check:
         name: "{{ web_hc }}"
-        healthy_threshold: 10
+        healthy_threshold: 2
+        check_interval_sec: 10
         port: 80
-        timeout_sec: 2
-        unhealthy_threshold: 5
+        timeout_sec: 5
+        unhealthy_threshold: 3
         project: "{{ project_id }}"
         auth_kind: serviceaccount
         service_account_file: "{{ credentials_file }}"
