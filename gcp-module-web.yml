@@ -118,4 +118,16 @@
         default_service: http-backend-svc	
         state: present
         
+    - name: Create Minimum HTTP Target_Proxy
+      gcp_target_proxy:
+        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        credentials_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
+        project_id: "project-manageiq"
+        target_proxy_name: test-target-proxy
+        target_proxy_type: HTTP
+        url_map_name: testingurlmap
+        state: present
         
+        
+        
+
