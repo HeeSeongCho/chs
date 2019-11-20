@@ -5,7 +5,7 @@
   vars:
     user: 
     service_account_email: joy-900@project-manageiq.iam.gserviceaccount.com
-    credentials_file: /home/$USER/project-manageiq-ee12388141f5.json
+    credentials_file: /home/heesung6809/project-manageiq-ee12388141f5.json
     project_id: project-manageiq
     web_tag: http-server
     web_image: project-web-wordpress
@@ -24,14 +24,14 @@
         size: n1-standard-1
         image: "{{ web_image }}"
         state: present
-        project_id: "project-manageiq"
-        credentials_file: "/home/$USER/project-manageiq-ee12388141f5.json"
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
         tags: "{{ web_tag }}"
         
     - name: create a health check
       gcp_compute_health_check:
-        name: test-healthcheck
+        name: "{{ web_hc }}"
         type: TCP
         tcp_health_check:
           port_name: http
@@ -40,16 +40,16 @@
         healthy_threshold: 10
         timeout_sec: 2
         unhealthy_threshold: 5
-        project: project-manageiq
+        project: "{{ project_id }}"
         auth_kind: serviceaccount
-        service_account_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
+        service_account_file: "{{ credentials_file }}"
         state: present
         
     - name: Create MIG to us-central1
       gce_mig:
-        project_id: "project-manageiq"
-        credentials_file: "/home/$USER/project-manageiq-ee12388141f5.json"
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
         name: "{{ web_region1 }}-wig"
         zone: "{{ web_region1 }}-a"
         state: present
@@ -71,9 +71,9 @@
 
     - name: Create MIG to asia-northwest1
       gce_mig:
-        project_id: "project-manageiq"
-        credentials_file: "/home/$USER/project-manageiq-ee12388141f5.json"
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
         name: "{{ web_region2 }}-wig"
         zone: "{{ web_region2 }}-a"
         state: present
@@ -95,9 +95,9 @@
 
     - name: Create BES with extended backend parameters
       gcp_backend_service:
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
-        credentials_file: "/home/{{ user }}/project-manageiq-ee12388141f5.json"
-        project_id: "project-manageiq"
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
         backend_service_name: "{{ backend_service }}"
         backends:
         - instance_group: "{{ web_region1 }}-wig"
@@ -111,18 +111,18 @@
     
     - name: Create Minimal Url_Map
       gcp_url_map:
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
-        credentials_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
-        project_id: "project-manageiq"
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
         url_map_name: "testingurlmap"
         default_service: http-backend-svc	
         state: present
         
     - name: Create Minimum HTTP Target_Proxy
       gcp_target_proxy:
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
-        credentials_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
-        project_id: "project-manageiq"
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
         target_proxy_name: test-target-proxy
         target_proxy_type: HTTP
         url_map_name: testingurlmap
@@ -130,9 +130,9 @@
         
     - name: Create Minimum GLOBAL Forwarding_Rule
       gcp_forwarding_rule:
-        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
-        credentials_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
-        project_id: "project-manageiq"
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
         forwarding_rule_name: test-forwarding-rule
         protocol: TCP
         port_range: 80
