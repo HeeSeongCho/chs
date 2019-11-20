@@ -33,11 +33,9 @@
     - name: create a health check
       gcp_compute_health_check:
         name: "{{ web_hc }}"
-        type: TCP
-        tcp_health_check:
+        type: HTTP
+        http_health_check:
           port_name: http
-          request: ping
-          response: pong
         healthy_threshold: 2
         timeout_sec: 5
         unhealthy_threshold: 3
@@ -126,7 +124,7 @@
         healthchecks:
         - "{{ web_hc }}"
         port_name: http
-        protocol: TCP
+        protocol: HTTP
         state: present
         timeout: 60
     
