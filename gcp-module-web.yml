@@ -128,6 +128,16 @@
         url_map_name: testingurlmap
         state: present
         
-        
+    - name: Create Minimum GLOBAL Forwarding_Rule
+      gcp_forwarding_rule:
+        service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
+        credentials_file: "/home/heesung6809/project-manageiq-ee12388141f5.json"
+        project_id: "project-manageiq"
+        forwarding_rule_name: test-forwarding-rule
+        protocol: TCP
+        port_range: 80
+        region: global
+        target: test-target-proxy
+        state: present
         
 
