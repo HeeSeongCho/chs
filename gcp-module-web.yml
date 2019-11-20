@@ -114,8 +114,8 @@
         service_account_email: "{{ service_account_email }}"
         credentials_file: "{{ credentials_file }}"
         project_id: "{{ project_id }}"
-        url_map_name: "testingurlmap"
-        default_service: http-backend-svc	
+        url_map_name: "{{ http_lb }}"
+        default_service: "{{ backend_service }}"
         state: present
         
     - name: Create Minimum HTTP Target_Proxy
@@ -123,9 +123,9 @@
         service_account_email: "{{ service_account_email }}"
         credentials_file: "{{ credentials_file }}"
         project_id: "{{ project_id }}"
-        target_proxy_name: test-target-proxy
+        target_proxy_name: "{{ http_proxy }}"
         target_proxy_type: HTTP
-        url_map_name: testingurlmap
+        url_map_name: "{{ http_lb }}"
         state: present
         
     - name: Create Minimum GLOBAL Forwarding_Rule
@@ -133,11 +133,11 @@
         service_account_email: "{{ service_account_email }}"
         credentials_file: "{{ credentials_file }}"
         project_id: "{{ project_id }}"
-        forwarding_rule_name: test-forwarding-rule
+        forwarding_rule_name: "{{ http_frontend }}"
         protocol: TCP
         port_range: 80
         region: global
-        target: test-target-proxy
+        target: "{{ http_proxy }}"
         state: present
         
 
