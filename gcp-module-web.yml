@@ -32,7 +32,7 @@
 ##########################################
     - name: create a health check
       gcp_compute_health_check:
-        name: test_object
+        name: "{{ web_hc }}"
         type: TCP
         tcp_health_check:
           port_name: http
