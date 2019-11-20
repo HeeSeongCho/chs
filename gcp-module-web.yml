@@ -16,14 +16,14 @@
   tasks:  
     - name: create instance template
       gce_instance_template:
-        name: {{ web-tmp }}
+        name: "{{ web_tmp }}"
         size: n1-standard-1
-        image: {{ web_image }}
+        image: "{{ web_image }}"
         state: present
         project_id: "project-manageiq"
         credentials_file: "/home/$USER/project-manageiq-ee12388141f5.json"
         service_account_email: "joy-900@project-manageiq.iam.gserviceaccount.com"
-        tags: {{ web_tag }}
+        tags: "{{ web_tag }}"
         
     - local_action:
         module: gce_lb
