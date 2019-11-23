@@ -3,9 +3,9 @@
   hosts: localhost
   gather_facts: no
   vars:
-    service_account_email: joy-900@project-manageiq.iam.gserviceaccount.com   #환경에 맞게 변경
-    credentials_file: /home/heesung6809/project-manageiq-ee12388141f5.json    #환경에 맞게 변경
-    project_id: project-manageiq    #환경에 맞게 변경
+    service_account_email: joy-900@project-manageiq.iam.gserviceaccount.com   
+    credentials_file: /home/heesung6809/project-manageiq-ee12388141f5.json    
+    project_id: project-manageiq    
     web_tag: http-server
     web_image: project-web-wordpress
     web_hc: http-health-check
